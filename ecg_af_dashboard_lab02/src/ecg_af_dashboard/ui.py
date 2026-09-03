@@ -175,7 +175,8 @@ def analyze_window_cached(
     qrs_counts: dict[str, int] = {}
 
     try:
-        processed = bandpass_zero_phase(raw, fs, low_hz, high_hz, order)
+        clean = np.where(np.isfinite(raw), raw, 0.0)
+        processed = bandpass_zero_phase(clean, fs, low_hz, high_hz, order)
     except ValueError as error:
         filter_error = str(error)
 
