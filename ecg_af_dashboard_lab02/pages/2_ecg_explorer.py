@@ -138,12 +138,13 @@ counts = analysis.qrs_counts
 total = counts.get("total_detected", 0)
 accepted = counts.get("accepted", 0)
 
-metrics = st.columns(5)
+metrics = st.columns(6)
 metrics[0].metric("Detectados", total)
 metrics[1].metric("Aceptados", accepted)
 metrics[2].metric("Fuera de límites", counts.get("discarded_out_of_bounds", 0))
 metrics[3].metric("Duplicados", counts.get("discarded_duplicates", 0))
 metrics[4].metric("Refractarios", counts.get("discarded_refractory", 0))
+metrics[5].metric("Baja calidad", counts.get("discarded_poor_quality", 0))
 
 if total and accepted / total < 0.8:
     st.warning(
