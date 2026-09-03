@@ -4,7 +4,7 @@ El inventario documenta procedencia, DOI, licencia, versión, hashes SHA-256,
 fecha de descarga, tamaño, duración, canales, unidades y problemas conocidos
 de cada registro, según el contrato de datos de la sección 3.2.
 
-El hash detecta cambios en el archivo; no anonimiza ni protege el contenido.
+El hash detecta cambios en el archivo, más no anonimiza ni protege el contenido.
 """
 
 import hashlib
@@ -14,8 +14,9 @@ from pathlib import Path
 
 import wfdb
 
-RAW_DIR = Path("data/raw/afdb")
-OUTPUT_PATH = Path("results/data_inventory.json")
+from ecg_af_dashboard.config import RAW_DIR, RESULTS_DIR
+
+OUTPUT_PATH = RESULTS_DIR / "data_inventory.json"
 
 SOURCE = {
     "database": "MIT-BIH Atrial Fibrillation Database (afdb)",
@@ -92,7 +93,7 @@ def describe_metadata(record_id: str) -> dict:
 
 
 def generate_data_inventory() -> dict:
-    """Recorre data/raw/afdb y escribe results/data_inventory.json."""
+    """Recorre la carpeta cruda y escribe el inventario de datos."""
     if not RAW_DIR.exists():
         raise FileNotFoundError(
             f"La carpeta {RAW_DIR} no existe. "
