@@ -43,30 +43,20 @@ def validate_ecg_record(record: ECGRecord) -> bool:
         if not np.all(np.diff(record.rhythm_samples) > 0):
             raise ValueError("Las anotaciones de ritmo no están en orden ascendente.")
 
-    # V. Validación respecto a la compatibilidad de la duración del ECG con número de
-    # muestras y fs.
-    expected_duration = num_samples / record.sampling_frequency_hz
-    if expected_duration <= 0:
-        raise ValueError("La duración calculada de la señal es cero o negativa.")
+    # V. Validación de que el registro contenga muestras válidas.
+    if num_samples <= 0:
+        raise ValueError("El registro no contiene muestras (el número de muestras es cero o negativo).")
 
-    # VI. Comprobación de la respectiva proporción de valores no finitos por canal
-    # (NaN).
-    # Se deben recorrer todos los canales, para analizar todo elemento en cada uno.
+    # VI. Comprobación de la proporción de valores no finitos por canal (NaN/Inf).
     for i in range(num_channels):
-        # Extracción de toda la fila, en el canal analizado i.
         channel_data = record.signal[:, i]
-        # Cuenta de los valores que no son finitos.
         non_finite_count = np.sum(~np.isfinite(channel_data))
         if non_finite_count > 0:
-            # Cálculo de la proporción (# de valores defectuosos : # total de muestras
-            # del canal)
             prop = non_finite_count / num_samples
-
-            # Plus: Si supera el 50%, se podría advertir de la presencia de estos
-            # valores.
+            # Se rechaza el registro si un canal supera el umbral crítico de corrupción
             if prop > 0.5:
-                print(
-                    f"Advertencia: El canal {record.signal_names[i]} supera el 50% "
+                raise ValueError(
+                    f"El canal {record.signal_names[i]} supera el 50% "
                     f"de valores no finitos ({prop * 100:.2f}%)."
                 )
 
