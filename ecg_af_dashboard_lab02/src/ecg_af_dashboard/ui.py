@@ -149,7 +149,13 @@ def analyze_window_cached(
     fs = record.sampling_frequency_hz
     raw = np.asarray(record.signal[start_sample:end_sample, channel_index], dtype=float)
 
-    quality = evaluate_signal_quality(raw, fs)
+    quality = evaluate_signal_quality(
+    raw,
+    fs,
+    max_non_finite_prop = PARAMETERS.quality.max_non_finite_prop,
+    max_out_of_range_prop = PARAMETERS.quality.max_out_of_range_prop,
+    max_flat_duration_sec = PARAMETERS.quality.max_flat_duration_s,
+    )
     """ Máscara por muestra con la que se excluyen las detecciones QRS que
     caen en tramos de calidad insuficiente (Actividad 3.4). """
     quality_mask = build_quality_mask(
