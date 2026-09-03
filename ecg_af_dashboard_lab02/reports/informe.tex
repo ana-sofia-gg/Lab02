@@ -1,0 +1,190 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+
+\title{Laboratorio 2: Dashboard Interactivo y Análisis Reproducible de Fibrilación Auricular en Señales de ECG}
+\author{Integrantes: Cristian Stiven Capera C., Ana Sofía García G., Jeimmy Andrea Gonzáles G.,\\
+Karol Mariana Gutiérrez G. y Brayan Andrés Ruiz C.}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Este informe presenta el desarrollo e implementación de un pipeline científico y un dashboard interactivo en Python para la exploración y análisis de episodios de fibrilación auricular (FA) utilizando registros de electrocardiograma (ECG) de la \textit{MIT-BIH Atrial Fibrillation Database} (AFDB) de PhysioNet. El proyecto se estructura bajo estándares de reproducibilidad, utilizando \texttt{uv} para la gestión determinista de dependencias, \texttt{ruff} para el control de estilo, \texttt{pytest} para pruebas unitarias, \texttt{Streamlit} para la interfaz visual y \LaTeX\ para la generación automatizada del informe técnico. Se implementan módulos robustos para lectura de formatos WFDB, validación de integridad mediante hashes SHA-256, preprocesamiento con filtros de fase cero, control post-detección de complejos QRS y cálculo de intervalos RR vinculados a anotaciones de ritmo clínico.
+\end{abstract}
+
+\section{Identificación, Problema y Pregunta de Trabajo}
+La fibrilación auricular (FA) es la arritmia cardíaca sostenida más común en la práctica clínica, caracterizada por una actividad auricular desorganizada y una respuesta ventricular irregularmente irregular. El problema central abordado en este laboratorio radica en la necesidad de auditar, procesar y visualizar de forma reproducible registros de ECG ambulatorios de larga duración, garantizando que cualquier investigador pueda replicar exactamente los resultados numéricos y gráficos a partir de datos crudos no versionados. 
+
+La pregunta de trabajo que guía el desarrollo es: \textbf{\textit{¿Es posible construir un sistema interactivo y reproducible en un entorno independiente que procese registros crudos de ECG de PhysioNet, valide su integridad, ejecute un pipeline analítico completo de detección de QRS e intervalos RR, y permita auditar visualmente los episodios de fibrilación auricular bajo un control de calidad de software?}}
+
+\section{Fisiología del ECG y contexto de la Fibrilación Auricular}
+El electrocardiograma (ECG) superficial registra la actividad eléctrica del corazón generada por los potenciales de acción de los miocitos cardíacos. Un ciclo cardíaco normal (latido sinusal) se compone típicamente de la onda P (despolarización auricular), el complejo QRS (despolarización ventricular) y la onda T (repolarización ventricular). 
+
+En contraste, durante un episodio de fibrilación auricular:
+\begin{itemize}
+    \item Las ondas P desaparecen y son reemplazadas por ondas de fibrilación irregulares (ondas f) de alta frecuencia y baja amplitud.
+    \item Los intervalos entre complejos QRS consecutivos (intervalos RR) se vuelven completamente irregulares, perdiendo la variabilidad sinusal normal.
+\end{itemize}
+El análisis de estos intervalos RR y la identificación de los cambios dinámicos en la línea de base son fundamentales para estudiar el comportamiento de la arritmia en registros ambulatorios de larga duración.
+
+\section{Base de Datos AFDB, Selección, Licencia y Contrato de Datos}
+El proyecto emplea la \textbf{MIT-BIH Atrial Fibrillation Database (AFDB)} v1.0.0 de PhysioNet (DOI: \href{https://doi.org/10.13026/C2MW2D}{10.13026/C2MW2D}), bajo la licencia \textit{Open Data Commons Attribution (ODC-By) v1.0}. Esta base de datos contiene registros ambulatorios de ECG de larga duración (aproximadamente 10 horas cada uno) diseñados específicamente para el estudio de episodios de FA.
+
+Para el desarrollo del laboratorio se seleccionaron tres registros representativos bajo criterios específicos de validación técnica:
+\begin{enumerate}
+    \item \textbf{Registro 05091:} Duración de 10 h 14 min, 2 canales (mV), muestreado a 250 Hz. Presenta en mayor medida un ritmo normal, más ciertas transiciones con episodios de FA. Funciona como el caso base de referencia y control.
+    \item \textbf{Registro 04043:} Duración de 10 h 14 min, 2 canales (mV), muestreado a 250 Hz. Contiene un bloque crítico ilegible (Bloque 39 con ceros continuos durante 10.24 segundos), lo que permite evaluar la robustez del código ante segmentos huecos o corrompidos.
+    \item \textbf{Registro 06453:} Duración parcial de 9 h 15 min, 2 canales (mV), muestreado a 250 Hz. Presenta una grabación incompleta que evalúa la capacidad del sistema para procesar series temporales de menor longitud a la estándar.
+\end{enumerate}
+
+Los archivos crudos (aprox. 77 MB) no se incluyen en el repositorio por motivos de tamaño y control de versiones. Su obtención y verificación se gestionan mediante el contrato de datos ejecutado por el script \texttt{scripts/download\_data.py}, que descarga los archivos WFDB y valida su integridad comparando sus hashes SHA-256 frente a los registros almacenados en \texttt{results/data\_inventory.json}.
+
+\section{Calidad, Preprocesamiento y Control QRS}
+El pipeline de procesamiento de señal implementa ciertas etapas antes de cualquier análisis "clínico":
+\begin{itemize}
+    \item \textbf{Control de Calidad (\texttt{quality.py}):} Evalúa (siguiendo los 3 indicadores elegidos) la presencia de valores no finitos, verifica que las amplitudes se mantengan dentro de rangos fisiológicos válidos y detecta tramos de línea plana o saturación prolongada.
+    \item \textbf{Preprocesamiento (\texttt{preprocessing.py}):} Se aplica un filtro pasabanda Butterworth de fase cero mediante \texttt{sosfiltfilt} para eliminar el ruido de línea de base y artefactos de alta frecuencia sin introducir desfase temporal, garantizando un análisis offline preciso.
+    \item \textbf{Detección y Control QRS (\texttt{qrs.py}, \texttt{qrs\_control.py}):} Se utiliza el detector XQRS para la localización inicial de complejos ventriculares. Posteriormente, los picos detectados pasan por un control post-detección que filtra duplicados, descarta picos fuera de límites físicos y aplica un período refractario mínimo estricto de \num{200}\si{ms}, registrando de forma explícita el conteo de cada descarte.
+\end{itemize}
+
+\section{Intervalos de Ritmo y Carga Anotada de FA}
+La asociación entre la señal eléctrica y la condición clínica se realiza mediante dos conceptos:
+\begin{itemize}
+    \item \textbf{Asignación de Ritmo a Intervalos RR:} Los intervalos entre latidos consecutivos (RR) calculados a partir de los picos QRS validados se alinean temporalmente con las anotaciones de ritmo del archivo de referencia \texttt{.atr}, asignando la etiqueta correspondiente (FA u otro ritmo) a cada intervalo según su marca de tiempo exacta.
+    \item \textbf{Carga Anotada de FA:} Se define como el porcentaje de tiempo que el paciente se encuentra bajo episodios de fibrilación auricular respecto a la duración total del registro o de la ventana temporal analizada, calculada de manera automatizada a partir de las referencias originales de PhysioNet.
+\end{itemize}
+
+\section{Arquitectura del Software}
+El repositorio implementa una separación modular en la carpeta \texttt{src/ecg\_af\_dashboard/}, aislando la lógica numérica de los scripts de ejecución, las vistas de la interfaz y las pruebas unitarias.
+
+\begin{verbatim}
+ecg_af_dashboard/
+|-- .python-version
+|-- pyproject.toml
+|-- uv.lock
+|-- README.md
+|-- app.py
+|-- pages/
+|   |-- 1_context_quality.py
+|   |-- 2_ecg_explorer.py
+|   |-- 3_rr_analysis.py
+|   |-- 4_episode_comparison.py
+|   `-- 5_methods_limits.py
+|-- scripts/
+|   |-- download_data.py
+|   |-- reproduce.py
+|   `-- environment_report.py
+|-- src/
+|   `-- ecg_af_dashboard/
+|       |-- io.py
+|       |-- validation.py
+|       |-- annotations.py
+|       |-- preprocessing.py
+|       |-- quality.py
+|       |-- qrs.py
+|       |-- qrs_control.py
+|       |-- rr.py
+|       |-- visualization.py
+|       |-- ui.py
+|       |-- config.py
+|       `-- inventory.py
+|-- tests/
+|-- reports/
+|   |-- project_brief.md
+|   `-- transformations.md
+`-- results/
+    |-- data_inventory.json
+    |-- reproduction_log.md
+    |-- contributions.md
+    |-- delivery_manifest.txt
+    |-- parameters.json
+    `-- summary.json
+\end{verbatim}
+
+\noindent\ La Tabla~\ref{tab:auditoria} audita las responsabilidades estructurales del proyecto.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Auditoría de estructura, responsabilidades y regeneración del proyecto.}
+  \label{tab:auditoria}
+  \small
+  \begin{tabular}{p{2.5cm} p{3.2cm} p{3.2cm} p{3.2cm} c}
+    \toprule
+    \textbf{Archivo / Carpeta} & \textbf{Entrada} & \textbf{Transformación} & \textbf{Salida} & \textbf{Regenerable} \\
+    \midrule
+    \texttt{pyproject.toml} & Metadatos y dependencias & Configura el entorno y reglas de linter (\texttt{ruff}) & Entorno estandarizado del proyecto & No \\
+    \addlinespace
+    \texttt{uv.lock} & Versiones declaradas & Bloquea versiones exactas de paquetes vía \texttt{uv} & Entorno determinista sincronizado & No \\
+    \addlinespace
+    \texttt{src/} & Funciones científicas y parámetros & Aplica lectura WFDB, filtros y detección QRS & Módulos reutilizables para app y scripts & No \\
+    \addlinespace
+    \texttt{scripts/} & Rutas y parámetros globales & Orquesta la descarga, validación y reproducción & Salidas en \texttt{data/processed/} y \texttt{results/} & No \\
+    \addlinespace
+    \texttt{results/} & Datos procesados y scripts de análisis & Calcula inventarios, parámetros y manifiestos & Archivos JSON de trazabilidad y bitácoras & Sí (excepto bitácoras) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Diseño de Vistas e Interacciones del Dashboard}
+La interfaz gráfica implementada en Streamlit (\texttt{app.py} y la carpeta \texttt{pages/}) se diseñó para resolver la complejidad analítica mediante cinco vistas interactivas interconectadas, compartiendo de manera sincrónica la selección de registro, canal y ventana temporal:
+
+\begin{enumerate}
+    \item \textbf{Contexto y Calidad (\texttt{1\_context\_quality.py}):} Muestra los metadatos del registro seleccionado, el estado de integridad de los archivos, la presencia de bloques anómalos (como el segmento de ceros en el registro 04043) y métricas globales de calidad de señal.
+    \item \textbf{Explorador ECG (\texttt{2\_ecg\_explorer.py}):} Permite visualizar de forma simultánea la señal cruda original de PhysioNet, la señal preprocesada con el filtro Butterworth de fase cero y la traza interna del detector QRS, evitando confundir las transformaciones matemáticas con la señal clínica real.
+    \item \textbf{Análisis RR (\texttt{3\_rr\_analysis.py}):} Presenta la evolución temporal de los intervalos RR, diagramas de Poincaré y la clasificación de los latidos según su correspondencia con los ritmos anotados.
+    \item \textbf{Episodios y Comparación (\texttt{4\_episode\_comparison.py}):} Facilita la exploración detallada de tramos específicos en condición de FA frente a tramos de ritmo normal, cuantificando la carga anotada de FA en la ventana activa.
+    \item \textbf{Métodos y Límites (\texttt{5\_methods\_limits.py}):} Documenta explícitamente los parámetros algorítmicos utilizados, las hipótesis de diseño y el recordatorio clínico de que la herramienta opera como un prototipo de exploración académica.
+\end{enumerate}
+
+\subsection{Ejemplo de Visualización de una Señal}
+Como ejemplo del comportamiento esperado en la interfaz, al inspeccionar una ventana de 30 segundos del registro \textbf{05091} en el canal principal, el panel inferior del explorador muestra la traza de ECG filtrada con picos QRS visibles y marcados con rosa la ubicación temporal exacta de cada latido cardíaco, mientras que las vistas secundarias desglosan la densidad de intervalos RR y los rechazos por período refractario.
+
+Adicionalmente, al inspeccionar una ventana de 30 segundos del registro \textbf{04043} entre los segundos 1100 y 1130 bajo un episodio de fibrilación auricular (FA) anotada, el sistema evidencia el comportamiento de los detectores automáticos ante artefactos severos de movimiento. En tramos con alta contaminación por ruido y fluctuaciones en la línea de base, el algoritmo de detección puede generar marcas QRS sobre oscilaciones grandes, lo que resalta la utilidad fundamental del dashboard interactivo para realizar una auditoría visual en lugar de asumir los resultados automatizados sin supervisión clínica o técnica.
+
+\section{Comparación Descriptiva FA / no-FA}
+El procesamiento de los registros permite contrastar cuantitativamente el comportamiento dinámico del corazón bajo ambos estados rítmicos:
+\begin{itemize}
+    \item \textbf{Ritmo no-FA (Sinusal):} Presenta una distribución de intervalos RR relativamente estable y acotada, con una variabilidad moderada. En este proyecto SDNN, RMSSD y $CV_{RR}$ se interpretan como descriptores de irregularidad ventricular durante el segmento, nunca como una estimación de modulación autonómica.
+    \item \textbf{Ritmo FA (Fibrilación):} Muestra una dispersión marcadamente incrementada en los diagramas de Poincaré, ausencia completa de correlación estricta entre latidos consecutivos y una distribución de intervalos RR caótica e irregular.
+\end{itemize}
+
+Los descriptores de la tabla siguiente los genera
+\texttt{scripts/reproduce.py} en \texttt{results/summary\_table.tex};
+ninguna cifra se transcribe a mano.
+
+\IfFileExists{results/summary_table.tex}
+  {\input{results/summary_table.tex}}
+  {\textit{Ejecute \texttt{uv run python scripts/reproduce.py} para
+   generar esta tabla.}}
+
+\section{Pruebas y Reproducción Externa}
+La robustez del sistema se valida mediante una suite completa de pruebas unitarias implementadas con \texttt{pytest}, que cubren la lectura de archivos, validación de esquemas, control de calidad y estabilidad de los algoritmos de detección. 
+
+Para reproducir íntegramente el análisis, regenerar los resultados y desplegar el dashboard en cualquier equipo independiente, se ejecutan secuencialmente los siguientes comandos en la terminal:
+
+\begin{verbatim}
+uv sync --locked
+uv run ruff check .
+uv run ruff format --check .
+uv run python scripts/download_data.py
+uv run pytest -v
+uv run python scripts/reproduce.py
+uv run streamlit run app.py
+\end{verbatim}
+
+\section{Limitaciones y Trabajo Futuro}
+Aunque el pipeline verifica los datos de entrada por SHA-256 y regenera todos los productos desde los archivos originales, presenta limitaciones inherentes: el prototipo utiliza un conjunto reducido de registros de la base de datos AFDB y no realiza diagnósticos clínicos en tiempo real, ya que los filtros de fase cero y los algoritmos implementados están diseñados para la auditoría offline. Como trabajo futuro se proyecta la incorporación de clasificadores basados en aprendizaje automático para la detección autónoma de episodios arrítmicos y la ampliación del soporte a bases de datos ambulatorias de mayor diversidad morfológica.
+
+\section{Contribuciones y Rotación de Roles}
+El desarrollo del proyecto se ejecutó mediante una distribución colaborativa y modular de responsabilidades: la coordinación general guió la arquitectura y orquestación del flujo; los codificadores implementaron conjuntamente el backend científico, las validaciones y las vistas del dashboard; y el área de aseguramiento de calidad (QA) auditó el sistema de pruebas unitarias y la robustez ante datos corruptos.
+
+\end{document}

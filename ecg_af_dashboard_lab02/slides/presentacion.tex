@@ -1,0 +1,120 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{siunitx}
+
+\title{Laboratorio 2}
+\subtitle{Análisis de ECG y Fibrilación Auricular}
+\author{Integrantes: Cristian Stiven Capera C., Ana Sofía García G., Jeimmy Andrea Gonzáles G.,\\
+Karol Mariana Gutiérrez G. y Brayan Andrés Ruiz C.}
+\date{\today}
+
+\begin{document}
+
+% Diapositiva 1 (portada + contenido): problema, usuario, pregunta y límite
+\begin{frame}{Laboratorio 2 --- Análisis de ECG y Fibrilación Auricular}
+    \scriptsize
+    \textbf{Integrantes:} Cristian Stiven Capera C., Ana Sofía García G.,
+    Jeimmy Andrea Gonzáles G., Karol Mariana Gutiérrez G. y Brayan Andrés Ruiz C.
+    \hfill \today
+    \vspace{0.15cm}
+    \normalsize
+    \begin{block}{Pregunta de Trabajo}
+        ¿Puede un tablero interactivo auditar las discrepancias entre anotaciones clínicas de Fibrilación Auricular (FA) y detecciones algorítmicas bajo condiciones de ruido real?
+    \end{block}
+    \begin{itemize}
+        \small
+        \item \textbf{Usuario y Contexto:} Ingenieros biomédicos y clínicos evaluando registros ambulatorios largos del MIT-BIH Atrial Fibrillation Database (AFDB).
+        \item \textbf{Problema Técnico:} Los artefactos de movimiento y las fluctuaciones de línea base pueden inducir falsos positivos en detectores automáticos de picos.
+        \item \textbf{Límite Clínico:} Los algoritmos basados en umbrales de amplitud no sustituyen la auditoría visual experta ante episodios de mucho ruido.
+    \end{itemize}
+\end{frame}
+
+% Diapositiva 2: ECG, AFDB y cadena de procesamiento
+\begin{frame}{ECG, AFDB y Cadena de Procesamiento}
+    \begin{columns}[T]
+        \column{0.5\textwidth}
+        \textbf{Datos y Arquitectura:}
+        \begin{itemize}
+            \small
+            \item \textbf{AFDB:} Registros de ECG de larga duración con anotaciones de ritmo oficiales en \texttt{data/raw/afdb/}.
+            \item \textbf{Procesamiento Dinámico:} Cálculo en memoria RAM sin persistencia pesada en \texttt{data/processed/}.
+            \item \textbf{Gestión:} Entorno estricto y determinista administrado mediante \texttt{uv}.
+        \end{itemize}
+        
+        \column{0.5\textwidth}
+        \textbf{Filtrado y Trazabilidad:}
+        \begin{itemize}
+            \small
+            \item \textbf{Filtro Pasabanda:} Butterworth de fase cero (0.5--40 Hz) para eliminar la deriva de línea base.
+            \item \textbf{Inventario:} Control de integridad bit a bit mediante hashes SHA-256 en archivos JSON de resultados.
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+% Diapositiva 3: QRS, RR, anotaciones, calidad y pruebas
+\begin{frame}{QRS, RR, Anotaciones, Calidad y Pruebas}
+    \begin{columns}[T]
+        \column{0.5\textwidth}
+        \textbf{Detección y Control QRS:}
+        \begin{itemize}
+            \small
+            \item Detección mediante \texttt{xqrs\_detect} sobre la señal procesada.
+            \item Control post-detección aplicando restricciones de período refractario y rechazo de duplicados.
+            \item Cálculo de intervalos RR excluyendo transiciones de ritmo.
+        \end{itemize}
+        
+        \column{0.5\textwidth}
+        \textbf{Garantía y Calidad (\texttt{pytest}):}
+        \begin{itemize}
+            \small
+            \item Validación de contratos de entrada y salida en la configuración de canales.
+            \item Cobertura automatizada de pruebas unitarias para métricas y robustez ante ruido.
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+% Diapositiva 4: Demostración y comparación principal
+\begin{frame}{Demostración y Comparación Principal}
+    \begin{columns}[T]
+        \column{0.48\textwidth}
+        \textbf{Exploración Interactiva en Streamlit:}
+        \begin{itemize}
+            \small
+            \item \textbf{Ventanas Cortas:} Permiten visualizar con precisión las cruces de QRS aceptados sobre la señal filtrada.
+            \item \textbf{Envolvente Dinámica:} Oculta las marcas QRS en vistas globales amplias para evitar sobrecarga visual y pérdida de rendimiento.
+        \end{itemize}
+        
+        \column{0.48\textwidth}
+        \textbf{Evidencia de Limitación en AFDB:}
+        \begin{itemize}
+            \small
+            \item \textbf{Registro 04043 (1100–1130 s):} Bajo episodios de FA anotada con artefactos severos de movimiento, el detector genera marcas falsas sobre oscilaciones espurias.
+            \item \textbf{Valor del Dashboard:} Permite auditar visualmente las fallas algorítmicas frente a la referencia clínica oficial.
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+% Diapositiva 5: Interpretación, limitaciones y reproducción
+\begin{frame}[fragile]{Interpretación, Limitaciones y Reproducción}
+    \begin{itemize}
+        \small
+        \item \textbf{Interpretación:} La automatización facilita la revisión masiva, pero la validación humana sigue siendo indispensable ante señales altamente contaminadas.
+        \item \textbf{Limitaciones:} Conjunto reducido de registros de la base de datos AFDB y no realiza diagnósticos clínicos en tiempo real, ya que los filtros de fase cero y los algoritmos implementados están diseñados para la auditoría offline.
+        \item \textbf{Reproducción Externa:}
+    \end{itemize}
+    \vspace{-0.1cm}
+    \tiny
+    \begin{verbatim}
+    uv sync --locked && uv run pytest && uv run python scripts/reproduce.py
+    latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build/slides slides/presentacion.tex
+    \end{verbatim}
+\end{frame}
+
+\end{document}

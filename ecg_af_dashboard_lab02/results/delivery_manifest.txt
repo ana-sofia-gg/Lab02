@@ -1,0 +1,15 @@
+MANIFIESTO DE ENTREGA
+=====================
+Archivos regenerados por scripts/reproduce.py.
+Los hashes permiten comprobar que dos ejecuciones producen lo mismo.
+
+808d05be1726487fcbf2c5cabcee967c23f1c335e9189f837191d7b1ac3aa34f       14972 B  data/processed/rr_04043.json
+f2d5b96f882aa455826010123de86f01a3692e09184cca915d5b0d298def38eb        1672 B  data/processed/rr_05091.json
+cf1d6dc0eaecc881816a54f3a8e265c035d5a80dcee30a859e4764cfdac65ac0        4633 B  data/processed/rr_06453.json
+6abdd0e6923850334dcea6eb96e4456135cafe6069fcb055c246b8e626944bb9       43597 B  figures/rr_hist_04043.png
+06c00d47608a8834e4ae88048631018322ce495cf3a20715863c6ec1573ace70       42670 B  figures/rr_hist_05091.png
+3b351ab0691a0db820d83951762d710d19cb1f530f254aa69c69832083951132       48534 B  figures/rr_hist_06453.png
+475e9b5f7cdfb14a6a0cca4149e9160561fb82e8d8d72c697bb0764f1d4b0e57        6486 B  results/data_inventory.json
+0e3a2347cabb62bd4351de7b7d39504a3206892d8dd51963baf147c1f48ee88e         691 B  results/parameters.json
+3c0771b099b3acf4e73fae38c7f358d2a8fea8b000b8c89ea115c134059f0ceb       17359 B  results/summary.json
+5a97ce49b8aaf925b6c16689dd1594ad5ef15915ab22d74b4959658bdff39e1b         799 B  results/summary_table.tex

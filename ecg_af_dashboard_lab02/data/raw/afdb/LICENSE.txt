@@ -1,0 +1,21 @@
+MIT-BIH Atrial Fibrillation Database (AFDB), version 1.0.0
+DOI: 10.13026/C2MW2D
+https://physionet.org/content/afdb/1.0.0/
+
+Licencia: Open Data Commons Attribution License v1.0 (ODC-By 1.0)
+https://opendatacommons.org/licenses/by/1-0/
+
+La licencia permite copiar, distribuir y adaptar la base de datos, incluso con
+fines comerciales, siempre que se atribuya la fuente. Este proyecto conserva la
+atribucion en el README, en el informe, en la presentacion y en la interfaz del
+dashboard.
+
+Atribucion requerida:
+
+  Moody GB, Mark RG. A new method for detecting atrial fibrillation using
+  R-R intervals. Computers in Cardiology. 10:227-230 (1983).
+
+  Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG,
+  Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and
+  PhysioNet: Components of a New Research Resource for Complex Physiologic
+  Signals. Circulation 101(23):e215-e220 (2000).

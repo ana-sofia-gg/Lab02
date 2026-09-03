@@ -1,0 +1,157 @@
+{
+    "database": "MIT-BIH Atrial Fibrillation Database (afdb)",
+    "provenance": "https://physionet.org/content/afdb/1.0.0/",
+    "doi": "10.13026/C2MW2D",
+    "version": "1.0.0",
+    "license": "Open Data Commons Attribution License (ODC-By) v1.0",
+    "inventory_generated_at": "2026-09-03T04:53:00.799068+00:00",
+    "records": [
+        {
+            "record_id": "04043",
+            "files": [
+                {
+                    "path": "data/raw/afdb/04043.atr",
+                    "size_bytes": 2318,
+                    "sha256": "098cb44c066d3a662d07810f54c6439cbbbc8229bfc686a73ecccc528a92bde8",
+                    "downloaded_at": "2026-09-03T04:32:42.542617+00:00"
+                },
+                {
+                    "path": "data/raw/afdb/04043.dat",
+                    "size_bytes": 27617280,
+                    "sha256": "0799eb0da3303a59ee200345d0d1efc812cf5a664e8159c5972590ec6208e460",
+                    "downloaded_at": "2026-09-03T04:32:47.990986+00:00"
+                },
+                {
+                    "path": "data/raw/afdb/04043.hea",
+                    "size_bytes": 108,
+                    "sha256": "5756b5a8b6613706ad436614ff90a4fd89361072944ac369f1926e4fbfcf9551",
+                    "downloaded_at": "2026-09-03T04:30:01.364380+00:00"
+                },
+                {
+                    "path": "data/raw/afdb/04043.qrs",
+                    "size_bytes": 123832,
+                    "sha256": "d8842d655e1a4e79a6d5d3de9bbdcedb9816be4f789adcd209c977044fee741b",
+                    "downloaded_at": "2026-09-03T04:32:43.270357+00:00"
+                }
+            ],
+            "metadata": {
+                "sampling_frequency_hz": 250,
+                "num_samples": 9205760,
+                "duration_seconds": 36823.04,
+                "duration_hours": 10.2286,
+                "num_channels": 2,
+                "signal_names": [
+                    "ECG1",
+                    "ECG2"
+                ],
+                "units": [
+                    "mV",
+                    "mV"
+                ]
+            },
+            "known_issues": [
+                "Bloque 39 ilegible: aproximadamente 10.24 s de ceros en la señal."
+            ]
+        },
+        {
+            "record_id": "05091",
+            "files": [
+                {
+                    "path": "data/raw/afdb/05091.atr",
+                    "size_bytes": 220,
+                    "sha256": "41a108a914abeac6480e7c3398893b666fa6cdd487b2f47a734fcfd50a5342f1",
+                    "downloaded_at": "2026-09-03T04:32:48.101059+00:00"
+                },
+                {
+                    "path": "data/raw/afdb/05091.dat",
+                    "size_bytes": 27617280,
+                    "sha256": "abc375deb01996b8212a3574e797a81e2aa93cdcb65cd0c41e7bdab4b640c270",
+                    "downloaded_at": "2026-09-03T04:35:26.072033+00:00"
+                },
+                {
+                    "path": "data/raw/afdb/05091.hea",
+                    "size_bytes": 109,
+                    "sha256": "e9985ed4f52d7a2f3784437f38f1ec103ef67049be01167b31e3ad839e510423",
+                    "downloaded_at": "2026-09-03T04:32:43.392363+00:00"
+                },
+                {
+                    "path": "data/raw/afdb/05091.qrs",
+                    "size_bytes": 73606,
+                    "sha256": "80e2b781f55fe764c1cd2d77f5e1d59b3e60a1b0c90e2140b18c152a2bed2059",
+                    "downloaded_at": "2026-09-03T04:32:48.730947+00:00"
+                },
+                {
+                    "path": "data/raw/afdb/05091.qrsc",
+                    "size_bytes": 73558,
+                    "sha256": "d36cc3f0f030df643ebd1d8686d789803a1029a9bcd9e4945541e960673bcb08",
+                    "downloaded_at": "2026-09-03T04:32:49.327091+00:00"
+                }
+            ],
+            "metadata": {
+                "sampling_frequency_hz": 250,
+                "num_samples": 9205760,
+                "duration_seconds": 36823.04,
+                "duration_hours": 10.2286,
+                "num_channels": 2,
+                "signal_names": [
+                    "ECG1",
+                    "ECG2"
+                ],
+                "units": [
+                    "mV",
+                    "mV"
+                ]
+            },
+            "known_issues": [
+                "Sin problemas estructurales; las anotaciones de latido son auditadas (extensión .qrsc)."
+            ]
+        },
+        {
+            "record_id": "06453",
+            "files": [
+                {
+                    "path": "data/raw/afdb/06453.atr",
+                    "size_bytes": 176,
+                    "sha256": "acf9d0fee2cdb53a15b8b4532c2baf6c06c48ebd94ecbaa767abe49a4989d75d",
+                    "downloaded_at": "2026-09-03T04:35:13.961622+00:00"
+                },
+                {
+                    "path": "data/raw/afdb/06453.dat",
+                    "size_bytes": 24975000,
+                    "sha256": "32fd725e7bb1880d8ba1427af0ff37cd421dd25e26777cec64dffebc4c7710a2",
+                    "downloaded_at": "2026-09-03T04:35:13.747960+00:00"
+                },
+                {
+                    "path": "data/raw/afdb/06453.hea",
+                    "size_bytes": 109,
+                    "sha256": "528f8ddb7d7e235ee11a7fe0f3a03ad8bae58550fb6359b15ba899aadcf494f0",
+                    "downloaded_at": "2026-09-03T04:32:49.435048+00:00"
+                },
+                {
+                    "path": "data/raw/afdb/06453.qrs",
+                    "size_bytes": 69676,
+                    "sha256": "6fc3c0b1b4bcda92277da22724a1864c058082914c5009dd529571bfb9229c3a",
+                    "downloaded_at": "2026-09-03T04:35:14.551284+00:00"
+                }
+            ],
+            "metadata": {
+                "sampling_frequency_hz": 250,
+                "num_samples": 8325000,
+                "duration_seconds": 33300.0,
+                "duration_hours": 9.25,
+                "num_channels": 2,
+                "signal_names": [
+                    "ECG1",
+                    "ECG2"
+                ],
+                "units": [
+                    "mV",
+                    "mV"
+                ]
+            },
+            "known_issues": [
+                "Grabación incompleta: la duración es menor a las 10 horas nominales."
+            ]
+        }
+    ]
+}

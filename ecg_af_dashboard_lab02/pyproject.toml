@@ -1,0 +1,39 @@
+[project]
+name = "ecg-af-dashboard"
+version = "0.1.0"
+description = "Dashboard reproducible de ECG para explorar fibrilación auricular anotada (AFDB)"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "matplotlib>=3.9,<4",
+    "numpy>=2,<3",
+    "pandas>=2.2,<4",
+    "plotly>=6,<7",
+    "scipy>=1.14,<2",
+    "streamlit>=1.40,<2",
+    "wfdb>=4.2,<5",
+]
+
+[project.scripts]
+ecg-af-dashboard = "ecg_af_dashboard:main"
+
+[build-system]
+requires = ["uv_build>=0.12.0,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3,<10",
+    "ruff>=0.12,<1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

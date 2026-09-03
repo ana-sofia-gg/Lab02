@@ -1,0 +1,542 @@
+{
+  "records": [
+    {
+      "record_id": "04043",
+      "sampling_frequency_hz": 250.0,
+      "total_samples": 9205760,
+      "comparison_window_s": 300.0,
+      "duration_s": 36823.04,
+      "channels": [
+        "ECG1",
+        "ECG2"
+      ],
+      "units": [
+        "mV",
+        "mV"
+      ],
+      "whole_record_af_load": {
+        "analyzable_time_s": 36823.04,
+        "af_time_s": 7919.704,
+        "afl_time_s": 12.9,
+        "j_time_s": 0.0,
+        "other_time_s": 28890.164,
+        "unknown_time_s": 0.272,
+        "af_load": 0.21507469236651836
+      },
+      "comparison": {
+        "AF": {
+          "window_samples": [
+            283913,
+            358913
+          ],
+          "window_start_s": 1135.652,
+          "duration_s": 300.0,
+          "channel": "ECG1",
+          "units": "mV",
+          "quality": {
+            "is_acceptable": true,
+            "status_message": "OK",
+            "non_finite_prop": 0.0,
+            "out_of_range_prop": 0.0,
+            "has_flatline": false
+          },
+          "qrs_counts": {
+            "total_detected": 573,
+            "discarded_out_of_bounds": 0,
+            "discarded_duplicates": 0,
+            "discarded_refractory": 0,
+            "discarded_poor_quality": 0,
+            "accepted": 573
+          },
+          "rr_counts": {
+            "total_pairs": 572,
+            "accepted": 572,
+            "calidad_insuficiente": 0,
+            "cruza_transicion_de_ritmo": 0,
+            "rr_fuera_de_limites": 0,
+            "accepted_AF": 572,
+            "accepted_AFL": 0,
+            "accepted_J": 0,
+            "accepted_OTHER": 0,
+            "accepted_UNKNOWN": 0
+          },
+          "rr_summaries": {
+            "AF": {
+              "count": 572,
+              "mean_rr_s": 0.5230069930069929,
+              "median_rr_s": 0.5,
+              "iqr_rr_s": 0.176,
+              "sdnn_s": 0.1482368293280245,
+              "cv_rr": 0.28343183037715614,
+              "rmssd_s": 0.18968378146988354,
+              "sufficient": true
+            },
+            "AFL": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "J": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "OTHER": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "UNKNOWN": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            }
+          },
+          "af_load": {
+            "selectable_time_s": 300.0,
+            "excluded_time_s": 0.0,
+            "analyzable_time_s": 300.0,
+            "af_time_s": 300.0,
+            "af_load": 1.0
+          }
+        },
+        "OTHER": {
+          "window_samples": [
+            1443306,
+            1518306
+          ],
+          "window_start_s": 5773.224,
+          "duration_s": 300.0,
+          "channel": "ECG1",
+          "units": "mV",
+          "quality": {
+            "is_acceptable": true,
+            "status_message": "OK",
+            "non_finite_prop": 0.0,
+            "out_of_range_prop": 0.0,
+            "has_flatline": false
+          },
+          "qrs_counts": {
+            "total_detected": 506,
+            "discarded_out_of_bounds": 0,
+            "discarded_duplicates": 0,
+            "discarded_refractory": 0,
+            "discarded_poor_quality": 0,
+            "accepted": 506
+          },
+          "rr_counts": {
+            "total_pairs": 505,
+            "accepted": 505,
+            "calidad_insuficiente": 0,
+            "cruza_transicion_de_ritmo": 0,
+            "rr_fuera_de_limites": 0,
+            "accepted_AF": 0,
+            "accepted_AFL": 0,
+            "accepted_J": 0,
+            "accepted_OTHER": 505,
+            "accepted_UNKNOWN": 0
+          },
+          "rr_summaries": {
+            "AF": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "AFL": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "J": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "OTHER": {
+              "count": 505,
+              "mean_rr_s": 0.5920633663366336,
+              "median_rr_s": 0.592,
+              "iqr_rr_s": 0.016000000000000014,
+              "sdnn_s": 0.011555076211965932,
+              "cv_rr": 0.019516620802706414,
+              "rmssd_s": 0.012204604907672398,
+              "sufficient": true
+            },
+            "UNKNOWN": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            }
+          },
+          "af_load": {
+            "selectable_time_s": 300.0,
+            "excluded_time_s": 0.0,
+            "analyzable_time_s": 300.0,
+            "af_time_s": 0.0,
+            "af_load": 0.0
+          }
+        }
+      },
+      "figure": "figures/rr_hist_04043.png"
+    },
+    {
+      "record_id": "05091",
+      "sampling_frequency_hz": 250.0,
+      "total_samples": 9205760,
+      "comparison_window_s": 42.552,
+      "duration_s": 36823.04,
+      "channels": [
+        "ECG1",
+        "ECG2"
+      ],
+      "units": [
+        "mV",
+        "mV"
+      ],
+      "whole_record_af_load": {
+        "analyzable_time_s": 36823.04,
+        "af_time_s": 86.768,
+        "afl_time_s": 0.0,
+        "j_time_s": 0.0,
+        "other_time_s": 36735.956,
+        "unknown_time_s": 0.316,
+        "af_load": 0.002356350806451613
+      },
+      "comparison": {
+        "AF": {
+          "window_samples": [
+            4350349,
+            4360987
+          ],
+          "window_start_s": 17401.396,
+          "duration_s": 42.552,
+          "channel": "ECG1",
+          "units": "mV",
+          "quality": {
+            "is_acceptable": true,
+            "status_message": "OK",
+            "non_finite_prop": 0.0,
+            "out_of_range_prop": 0.0,
+            "has_flatline": false
+          },
+          "qrs_counts": {
+            "total_detected": 67,
+            "discarded_out_of_bounds": 0,
+            "discarded_duplicates": 0,
+            "discarded_refractory": 0,
+            "discarded_poor_quality": 0,
+            "accepted": 67
+          },
+          "rr_counts": {
+            "total_pairs": 66,
+            "accepted": 66,
+            "calidad_insuficiente": 0,
+            "cruza_transicion_de_ritmo": 0,
+            "rr_fuera_de_limites": 0,
+            "accepted_AF": 66,
+            "accepted_AFL": 0,
+            "accepted_J": 0,
+            "accepted_OTHER": 0,
+            "accepted_UNKNOWN": 0
+          },
+          "rr_summaries": {
+            "AF": {
+              "count": 66,
+              "mean_rr_s": 0.6316363636363637,
+              "median_rr_s": 0.574,
+              "iqr_rr_s": 0.17899999999999994,
+              "sdnn_s": 0.20657944170286097,
+              "cv_rr": 0.3270543838128196,
+              "rmssd_s": 0.27994812706312905,
+              "sufficient": true
+            },
+            "AFL": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "J": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "OTHER": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "UNKNOWN": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            }
+          },
+          "af_load": {
+            "selectable_time_s": 42.552,
+            "excluded_time_s": 0.0,
+            "analyzable_time_s": 42.552,
+            "af_time_s": 42.552,
+            "af_load": 1.0
+          }
+        },
+        "OTHER": {
+          "window_samples": [
+            6778054,
+            6788692
+          ],
+          "window_start_s": 27112.216,
+          "duration_s": 42.552,
+          "channel": "ECG1",
+          "units": "mV",
+          "quality": {
+            "is_acceptable": true,
+            "status_message": "OK",
+            "non_finite_prop": 0.0,
+            "out_of_range_prop": 0.0,
+            "has_flatline": false
+          },
+          "qrs_counts": {
+            "total_detected": 41,
+            "discarded_out_of_bounds": 0,
+            "discarded_duplicates": 0,
+            "discarded_refractory": 0,
+            "discarded_poor_quality": 0,
+            "accepted": 41
+          },
+          "rr_counts": {
+            "total_pairs": 40,
+            "accepted": 40,
+            "calidad_insuficiente": 0,
+            "cruza_transicion_de_ritmo": 0,
+            "rr_fuera_de_limites": 0,
+            "accepted_AF": 0,
+            "accepted_AFL": 0,
+            "accepted_J": 0,
+            "accepted_OTHER": 40,
+            "accepted_UNKNOWN": 0
+          },
+          "rr_summaries": {
+            "AF": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "AFL": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "J": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "OTHER": {
+              "count": 40,
+              "mean_rr_s": 1.0146000000000002,
+              "median_rr_s": 1.016,
+              "iqr_rr_s": 0.03200000000000003,
+              "sdnn_s": 0.01698385356894255,
+              "cv_rr": 0.01673945748959447,
+              "rmssd_s": 0.019689903699416825,
+              "sufficient": true
+            },
+            "UNKNOWN": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            }
+          },
+          "af_load": {
+            "selectable_time_s": 42.552,
+            "excluded_time_s": 0.0,
+            "analyzable_time_s": 42.552,
+            "af_time_s": 0.0,
+            "af_load": 0.0
+          }
+        }
+      },
+      "figure": "figures/rr_hist_05091.png"
+    },
+    {
+      "record_id": "06453",
+      "sampling_frequency_hz": 250.0,
+      "total_samples": 8325000,
+      "comparison_window_s": 151.164,
+      "duration_s": 33300.0,
+      "channels": [
+        "ECG1",
+        "ECG2"
+      ],
+      "units": [
+        "mV",
+        "mV"
+      ],
+      "whole_record_af_load": {
+        "analyzable_time_s": 33300.0,
+        "af_time_s": 371.28,
+        "afl_time_s": 0.0,
+        "j_time_s": 0.0,
+        "other_time_s": 32928.12,
+        "unknown_time_s": 0.6,
+        "af_load": 0.01114954954954955
+      },
+      "comparison": {
+        "AF": {
+          "window_samples": [
+            7326248,
+            7364039
+          ],
+          "window_start_s": 29304.992,
+          "duration_s": 151.164,
+          "channel": "ECG1",
+          "units": "mV",
+          "quality": {
+            "is_acceptable": true,
+            "status_message": "OK",
+            "non_finite_prop": 0.0,
+            "out_of_range_prop": 0.0,
+            "has_flatline": false
+          },
+          "qrs_counts": {
+            "total_detected": 175,
+            "discarded_out_of_bounds": 0,
+            "discarded_duplicates": 0,
+            "discarded_refractory": 0,
+            "discarded_poor_quality": 0,
+            "accepted": 175
+          },
+          "rr_counts": {
+            "total_pairs": 174,
+            "accepted": 174,
+            "calidad_insuficiente": 0,
+            "cruza_transicion_de_ritmo": 0,
+            "rr_fuera_de_limites": 0,
+            "accepted_AF": 174,
+            "accepted_AFL": 0,
+            "accepted_J": 0,
+            "accepted_OTHER": 0,
+            "accepted_UNKNOWN": 0
+          },
+          "rr_summaries": {
+            "AF": {
+              "count": 174,
+              "mean_rr_s": 0.8642298850574714,
+              "median_rr_s": 0.878,
+              "iqr_rr_s": 0.26,
+              "sdnn_s": 0.18734615738129204,
+              "cv_rr": 0.21677815199463218,
+              "rmssd_s": 0.21639740791028209,
+              "sufficient": true
+            },
+            "AFL": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "J": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "OTHER": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "UNKNOWN": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            }
+          },
+          "af_load": {
+            "selectable_time_s": 151.164,
+            "excluded_time_s": 0.0,
+            "analyzable_time_s": 151.164,
+            "af_time_s": 151.164,
+            "af_load": 1.0
+          }
+        },
+        "OTHER": {
+          "window_samples": [
+            4447177,
+            4484968
+          ],
+          "window_start_s": 17788.708,
+          "duration_s": 151.164,
+          "channel": "ECG1",
+          "units": "mV",
+          "quality": {
+            "is_acceptable": true,
+            "status_message": "OK",
+            "non_finite_prop": 0.0,
+            "out_of_range_prop": 0.0,
+            "has_flatline": false
+          },
+          "qrs_counts": {
+            "total_detected": 149,
+            "discarded_out_of_bounds": 0,
+            "discarded_duplicates": 0,
+            "discarded_refractory": 0,
+            "discarded_poor_quality": 0,
+            "accepted": 149
+          },
+          "rr_counts": {
+            "total_pairs": 148,
+            "accepted": 148,
+            "calidad_insuficiente": 0,
+            "cruza_transicion_de_ritmo": 0,
+            "rr_fuera_de_limites": 0,
+            "accepted_AF": 0,
+            "accepted_AFL": 0,
+            "accepted_J": 0,
+            "accepted_OTHER": 148,
+            "accepted_UNKNOWN": 0
+          },
+          "rr_summaries": {
+            "AF": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "AFL": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "J": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            },
+            "OTHER": {
+              "count": 148,
+              "mean_rr_s": 1.0131081081081086,
+              "median_rr_s": 1.02,
+              "iqr_rr_s": 0.0259999999999998,
+              "sdnn_s": 0.0885816534140477,
+              "cv_rr": 0.08743553891742732,
+              "rmssd_s": 0.13906118655269048,
+              "sufficient": true
+            },
+            "UNKNOWN": {
+              "count": 0,
+              "sufficient": false,
+              "message": "Se requieren al menos 30 intervalos RR válidos; amplíe la ventana."
+            }
+          },
+          "af_load": {
+            "selectable_time_s": 151.164,
+            "excluded_time_s": 0.0,
+            "analyzable_time_s": 151.164,
+            "af_time_s": 0.0,
+            "af_load": 0.0
+          }
+        }
+      },
+      "figure": "figures/rr_hist_06453.png"
+    }
+  ],
+  "parameters_file": "results/parameters.json"
+}

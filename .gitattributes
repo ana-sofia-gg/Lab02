@@ -1,0 +1,7 @@
+# Normaliza los finales de linea a LF dentro del repositorio.
+# Sin esto, un editor en Windows reescribe todos los archivos con CRLF y cada
+# commit aparece como si el proyecto entero hubiera cambiado.
+* text=auto eol=lf
+*.png binary
+*.pdf binary
+*.dat binary

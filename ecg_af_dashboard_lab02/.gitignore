@@ -1,0 +1,45 @@
+# ── Datos crudos ───────────────────────────────────────────
+# Los registros de AFDB no se versionan (77 MB). Se recuperan con:
+#   uv run python scripts/download_data.py
+data/raw/afdb/*
+!data/raw/afdb/README.md
+!data/raw/afdb/LICENSE.txt
+data/interim/*
+data/processed/*
+!**/.gitkeep
+
+# Derivados regenerables. Se conservan las carpetas, no su contenido.
+build/*
+!build/reports/
+!build/slides/
+build/reports/*
+build/slides/*
+!build/reports/.gitkeep
+!build/slides/.gitkeep
+
+# ── Python ─────────────────────────────────────────────────
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# ── Streamlit ──────────────────────────────────────────────
+.streamlit/secrets.toml
+
+# ── LaTeX ──────────────────────────────────────────────────
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+
+# ── Sistema operativo ──────────────────────────────────────
+Thumbs.db
+desktop.ini
+.DS_Store
