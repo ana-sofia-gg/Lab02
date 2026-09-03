@@ -194,7 +194,12 @@ def analyze_window_cached(
         fs,
         quality_mask=global_mask,
     )
-    af_load = calculate_af_load(intervals, (start_sample, end_sample), fs)
+    af_load = calculate_af_load(
+    intervals, 
+    (start_sample, end_sample), 
+    fs, 
+    excluded_spans=quality.excluded_spans
+    )
 
     return WindowAnalysis(
         start_sample=start_sample,
