@@ -63,6 +63,7 @@ class WindowAnalysis:
     rr_result: RRBuildResult
     af_load: AFLoadResult
     filter_error: str | None
+    disagreement_info: dict | None
 
 
 # ── Descubrimiento de registros ────────────────────────────────────────────
@@ -150,11 +151,11 @@ def analyze_window_cached(
     raw = np.asarray(record.signal[start_sample:end_sample, channel_index], dtype=float)
 
     quality = evaluate_signal_quality(
-    raw,
-    fs,
-    max_non_finite_prop = PARAMETERS.quality.max_non_finite_prop,
-    max_out_of_range_prop = PARAMETERS.quality.max_out_of_range_prop,
-    max_flat_duration_sec = PARAMETERS.quality.max_flat_duration_s,
+        raw,
+        fs,
+        max_non_finite_prop=PARAMETERS.quality.max_non_finite_prop,
+        max_out_of_range_prop=PARAMETERS.quality.max_out_of_range_prop,
+        max_flat_duration_sec=PARAMETERS.quality.max_flat_duration_s,
     )
     """ Máscara por muestra con la que se excluyen las detecciones QRS que
     caen en tramos de calidad insuficiente (Actividad 3.4). """
@@ -202,10 +203,17 @@ def analyze_window_cached(
         quality_mask=global_mask,
     )
     af_load = calculate_af_load(
-    intervals, 
-    (start_sample, end_sample), 
-    fs, 
-    excluded_spans=quality.excluded_spans
+        intervals,
+        (start_sample, end_sample),
+        fs,
+        excluded_spans=quality.excluded_spans,
+    )
+
+    disagreement_info = check_qrs_channel_disagreement(
+        record.signal,
+        fs,
+        start_sample,
+        end_sample,
     )
 
     return WindowAnalysis(
@@ -223,6 +231,7 @@ def analyze_window_cached(
         rr_result=rr_result,
         af_load=af_load,
         filter_error=filter_error,
+        disagreement_info=disagreement_info,
     )
 
 
@@ -319,7 +328,7 @@ def window_controls(record: ECGRecord) -> tuple[int, int]:
 
 
 def render_quality_banner(analysis: WindowAnalysis) -> None:
-    """Veredicto de calidad con el mensaje oficial y desacuerdo QRS."""
+    """Muestra el veredicto de calidad con el mensaje oficial y desacuerdo QRS."""
     if analysis.filter_error is not None:
         st.error(
             f"No se pudo procesar la ventana: {analysis.filter_error} "
@@ -338,9 +347,9 @@ def render_quality_banner(analysis: WindowAnalysis) -> None:
     if analysis.disagreement_info and analysis.disagreement_info.get("disagreement_flag"):
         diff_pct = analysis.disagreement_info.get("max_diff_pct", 0.0)
         st.warning(
-            f"**Desacuerdo marcado de QRS entre canales** "
+            f"⚠️ **Desacuerdo marcado de QRS entre canales** "
             f"(Diferencia del {diff_pct:.1f}% entre derivaciones). "
-            "Posible artefacto, ruido o fallo en una de las derivaciones."
+            "Posible artefacto, ruido severo o fallo en una de las derivaciones."
         )
 
 
