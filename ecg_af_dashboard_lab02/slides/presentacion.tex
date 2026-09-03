@@ -80,24 +80,25 @@ Karol Mariana Gutiérrez G. y Brayan Andrés Ruiz C.}
     \end{columns}
 \end{frame}
 
-% Diapositiva 4: Demostración y comparación principal
-\begin{frame}{Demostración y Comparación Principal}
+% Diapositiva 4: Demostración y comparación principal con evidencia visual
+\begin{frame}{Demostración y Evidencia Visual (Registro 04043)}
     \begin{columns}[T]
         \column{0.48\textwidth}
-        \textbf{Exploración Interactiva en Streamlit:}
+        \textbf{Exploración y Limitación en AFDB:}
         \begin{itemize}
             \small
-            \item \textbf{Ventanas Cortas:} Permiten visualizar con precisión las cruces de QRS aceptados sobre la señal filtrada.
-            \item \textbf{Envolvente Dinámica:} Oculta las marcas QRS en vistas globales amplias para evitar sobrecarga visual y pérdida de rendimiento.
+            \item \textbf{Ventanas y Envolventes:} Visualización interactiva de QRS aceptados y manejo de tramos largos en Streamlit.
+            \item \textbf{Registro 04043:} Bajo artefactos severos de movimiento, el detector genera marcas falsas sobre oscilaciones aleatorias.
+            \item \textbf{Valor del Dashboard:} Permite auditar visualmente las fallas algorítmicas frente a la referencia clínica.
         \end{itemize}
         
         \column{0.48\textwidth}
-        \textbf{Evidencia de Limitación en AFDB:}
-        \begin{itemize}
-            \small
-            \item \textbf{Registro 04043 (1100–1130 s):} Bajo episodios de FA anotada con artefactos severos de movimiento, el detector genera marcas falsas sobre oscilaciones espurias.
-            \item \textbf{Valor del Dashboard:} Permite auditar visualmente las fallas algorítmicas frente a la referencia clínica oficial.
-        \end{itemize}
+        \centering
+        \textbf{Histograma RR Automático:}
+        \vspace{0.1cm}
+        \includegraphics[width=0.95\textwidth]{../figures/rr_hist_04043.png}
+        \tiny
+        \par Distribución de intervalos RR generada por \texttt{reproduce.py}.
     \end{columns}
 \end{frame}
 
