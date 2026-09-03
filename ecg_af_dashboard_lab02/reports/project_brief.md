@@ -47,8 +47,8 @@ una comparación metodológicamente débil.
 
 ## Ventana
 
-Ventana: 60 segundos. Se fija una duración inicial de 1 minuto porque balancea 
-adecuadamente la resolución temporal para ubicar episodios cortos de FA y la 
+Ventana: Máx 300 segundos. Se fija una duración inicial variable con el fin
+de balancear la resolución temporal para ubicar episodios cortos de FA y la 
 necesidad estadística de capturar suficientes latidos consecutivos.
 
 ## Detector QRS
