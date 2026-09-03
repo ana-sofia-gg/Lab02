@@ -24,7 +24,7 @@ from ecg_af_dashboard.annotations import (
 from ecg_af_dashboard.config import PARAMETERS, RAW_DIR
 from ecg_af_dashboard.io import ECGRecord, load_afdb_record
 from ecg_af_dashboard.preprocessing import bandpass_zero_phase
-from ecg_af_dashboard.qrs import detect_qrs_xqrs
+from ecg_af_dashboard.qrs import check_qrs_channel_disagreement, detect_qrs_xqrs
 from ecg_af_dashboard.qrs_control import control_qrs_detections
 from ecg_af_dashboard.quality import (
     QualityAssessment,
@@ -319,7 +319,7 @@ def window_controls(record: ECGRecord) -> tuple[int, int]:
 
 
 def render_quality_banner(analysis: WindowAnalysis) -> None:
-    """Muestra el veredicto de calidad con el mensaje oficial."""
+    """Veredicto de calidad con el mensaje oficial y desacuerdo QRS."""
     if analysis.filter_error is not None:
         st.error(
             f"No se pudo procesar la ventana: {analysis.filter_error} "
@@ -333,6 +333,14 @@ def render_quality_banner(analysis: WindowAnalysis) -> None:
         st.warning(
             f"Calidad: {analysis.quality.status_message}. "
             "Los descriptores de esta ventana no deben usarse para comparar."
+        )
+
+    if analysis.disagreement_info and analysis.disagreement_info.get("disagreement_flag"):
+        diff_pct = analysis.disagreement_info.get("max_diff_pct", 0.0)
+        st.warning(
+            f"**Desacuerdo marcado de QRS entre canales** "
+            f"(Diferencia del {diff_pct:.1f}% entre derivaciones). "
+            "Posible artefacto, ruido o fallo en una de las derivaciones."
         )
 
 
