@@ -3,9 +3,6 @@
 Documento exigido por la sección 3.1 de la guía (Control D1). Se completa
 antes de programar la interfaz y se actualiza si una decisión cambia.
 
-> **Campos marcados con «DECIDIR»**: el equipo debe fijar el valor y borrar la
-> marca antes de la sustentación. No se sustentan campos sin definir.
-
 ---
 
 ## Problema
@@ -50,9 +47,9 @@ una comparación metodológicamente débil.
 
 ## Ventana
 
-**DECIDIR** — duración inicial de la ventana de análisis y su justificación.
-Criterio sugerido: la ventana debe contener un número mínimo de intervalos RR
-válidos para que los descriptores sean estables (ver «Métrica principal»).
+Ventana: 60 segundos. Se fija una duración inicial de 1 minuto porque balancea 
+adecuadamente la resolución temporal para ubicar episodios cortos de FA y la 
+necesidad estadística de capturar suficientes latidos consecutivos.
 
 ## Detector QRS
 
@@ -74,14 +71,15 @@ Carga anotada de FA en la selección:
 $$\text{carga anotada de FA} = \frac{\text{tiempo anotado como (AFIB dentro de la ventana}}{\text{tiempo seleccionable}}$$
 
 Unidad: proporción adimensional en `[0, 1]`. Implementada en
-`src/ecg_af_dashboard/load.py` (`calculate_af_load`).
+`src/ecg_af_dashboard/annotations.py.py` (`calculate_af_load`).
 
 Descriptores de irregularidad RR que la acompañan: mediana e IQR, media y
 desviación estándar, coeficiente de variación, RMSSD, y número y proporción
 de intervalos excluidos.
 
-**DECIDIR** — mínimo de intervalos RR válidos para reportar descriptores. Por
-debajo de ese umbral la vista debe mostrar un aviso en vez de un número.
+Se recomineda un umbral mínimo de 30 intervalos RR válidos por ventana. Por 
+debajo de esa cantidad (por ejemplo, debido a exclusiones por calidad o huecos 
+de señal), la ventana se considera estadísticamente inestable.
 
 Regla de asignación RR↔ritmo: un intervalo RR se acepta **solo si ambas
 detecciones QRS caen dentro del mismo intervalo de ritmo**. Asignar por un
@@ -105,8 +103,7 @@ Mensaje al usuario: «Calidad insuficiente para comparar» / «Ok».
 
 ## Criterio de éxito
 
-**DECIDIR** — tarea observable que el usuario debe poder completar. Propuesta
-a validar con el docente: *el usuario selecciona un registro, localiza un
+Propuesta a validar: *el usuario selecciona un registro, localiza un
 episodio de FA en la cronología, abre una ventana FA y una ventana no-FA de
 igual duración en el mismo registro, y obtiene los descriptores RR de ambas
 con el conteo de intervalos excluidos, o un aviso explícito de calidad
