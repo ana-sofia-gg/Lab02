@@ -202,11 +202,12 @@ def analyze_window_cached(
         fs,
         quality_mask=global_mask,
     )
+    excluded_spans = [(start_sample, end_sample)] if not quality.is_acceptable else []
     af_load = calculate_af_load(
         intervals,
         (start_sample, end_sample),
         fs,
-        excluded_spans=quality.excluded_spans,
+        excluded_spans=excluded_spans,
     )
 
     disagreement_info = check_qrs_channel_disagreement(
