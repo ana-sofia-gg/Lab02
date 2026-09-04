@@ -96,7 +96,7 @@ Karol Mariana Gutiérrez G. y Brayan Andrés Ruiz C.}
         \centering
         \textbf{Histograma RR Automático:}
         \vspace{0.1cm}
-        \includegraphics[width=0.95\textwidth]{../figures/rr_hist_04043.png}
+        \includegraphics[width=0.95\textwidth]{figures/rr_hist_04043.png}
         \tiny
         \par Distribución de intervalos RR generada por \texttt{reproduce.py}.
     \end{columns}
@@ -113,8 +113,8 @@ Karol Mariana Gutiérrez G. y Brayan Andrés Ruiz C.}
     \vspace{-0.1cm}
     \tiny
     \begin{verbatim}
-    uv sync --locked && uv run pytest && uv run python scripts/reproduce.py
-    latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build/slides slides/presentacion.tex
+        uv sync --locked && uv run pytest && uv run python scripts/reproduce.py
+        latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build/slides slides/presentacion.tex
     \end{verbatim}
 \end{frame}
 
